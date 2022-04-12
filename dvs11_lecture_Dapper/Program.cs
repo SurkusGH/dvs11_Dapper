@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using System;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace dvs11_lecture_Dapper
 {
@@ -27,7 +28,11 @@ namespace dvs11_lecture_Dapper
             // 9.Išrinkite duomenis(vardą ir pavardę) apie programuotojus iš Java skyriaus
             ExecuteSol_0109("JAVA");
 
+            // 16.Suskaičiuokite, kiek įmonėje dirba Testuotojų.
+            ExecuteSol_0116("Testuotojas");
+
         }
+
         /// <summary>
         /// Išrenka darbuotojus pagal jų priklausymą skyriuje;
         /// Galimos parinktys : "C#". "JAVA", "Testavimo"
@@ -52,6 +57,7 @@ namespace dvs11_lecture_Dapper
                                                           $"{ row.Projektas_ID}");
             Console.WriteLine("---");
         }
+
         /// <summary>
         /// Išrenka darbuotojus pagal jų gimimo datą;
         /// </summary>
@@ -75,6 +81,7 @@ namespace dvs11_lecture_Dapper
                                                           $"{ row.Projektas_ID}");
             Console.WriteLine("---");
         }
+
         /// <summary>
         /// Randa vardą pagal pavardę
         /// </summary>
@@ -92,6 +99,7 @@ namespace dvs11_lecture_Dapper
             foreach (var row in data) Console.WriteLine($"* { row.Vardas}");    
             Console.WriteLine("---");
         }
+
         /// <summary>
         /// Išrenka darbuotojus pagal jų priklausymą skyriuje;
         /// Galimos parinktys : "C#". "JAVA", "Testavimo"
@@ -109,6 +117,23 @@ namespace dvs11_lecture_Dapper
 
             Console.WriteLine($"{input} skyriaus darbuotojai: ");
             foreach (var row in data) Console.WriteLine($"* { row.Vardas} -  { row.Pavarde}");                   
+            Console.WriteLine("---");
+        }
+
+        /// <summary>
+        /// Suskaičiuoja darbuotojus skyriuje;
+        /// Galimos parinktys: "Projektų vadovas", "Programuotojas" ir "Testuotojas"
+        /// </summary>
+        /// <param string="input"></param>
+        public static void ExecuteSol_0116(string input)
+        {
+            using var connection = new SqlConnection(connString);
+            connection.Open();
+            var sql = "SELECT COUNT(ALL [PAREIGOS]) FROM[dvs01_lecture_Intro].[dbo].[DARBUOTOJAS] WHERE[PAREIGOS] = @Occupation";
+            var values = new { Occupation = input };
+            var data = connection.Query<int>(sql, values);
+
+            data.ToList().ForEach(x => Console.WriteLine(x));
             Console.WriteLine("---");
         }
     }
