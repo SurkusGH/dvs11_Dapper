@@ -133,6 +133,7 @@ namespace dvs11_lecture_Dapper
             var values = new { Occupation = input };
             var data = connection.Query<int>(sql, values);
 
+            Console.WriteLine($"{input} skyriaus darbuotojų skaičius:");
             data.ToList().ForEach(x => Console.WriteLine(x));
             Console.WriteLine("---");
         }
