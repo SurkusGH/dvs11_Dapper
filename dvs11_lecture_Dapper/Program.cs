@@ -131,10 +131,10 @@ namespace dvs11_lecture_Dapper
             connection.Open();
             var sql = "SELECT COUNT(ALL [PAREIGOS]) FROM[dvs01_lecture_Intro].[dbo].[DARBUOTOJAS] WHERE[PAREIGOS] = @Occupation";
             var values = new { Occupation = input };
-            var data = connection.Query<int>(sql, values);
+            var data = connection.QuerySingle<int>(sql, values); // <-- QuerySingle
 
             Console.WriteLine($"{input} skyriaus darbuotojų skaičius:");
-            data.ToList().ForEach(x => Console.WriteLine(x));
+            Console.WriteLine(data);
             Console.WriteLine("---");
         }
     }
